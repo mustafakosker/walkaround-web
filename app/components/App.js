@@ -1,11 +1,12 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from './store';
+import Page from './page/Page';
 
 const App = () => {
   return (
     <Provider store={store}>
-      <h2 id="heading">Hello ReactJS</h2>
+      <Page />
     </Provider>
   );
 };

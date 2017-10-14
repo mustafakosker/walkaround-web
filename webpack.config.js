@@ -1,5 +1,7 @@
+
 const { resolve } = require('path');
 
+const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
@@ -45,20 +47,24 @@ const config = {
         exclude: /node_modules/,
       },
       {
-        test: /\.scss$/,
-        exclude: /node_modules/,
-        use: ExtractTextPlugin.extract({
+        test: /(\.css|.scss)$/,
+        loader: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
-            'css-loader',
             {
-              loader: 'sass-loader',
-              query: {
-                sourceMap: false,
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
               },
             },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: () => ([autoprefixer()]),
+              },
+            },
+            'sass-loader',
           ],
-          publicPath: '../'
         }),
       },
       { test: /\.(png|jpg|gif)$/, use: 'url-loader?limit=15000&name=images/[name].[ext]' },
